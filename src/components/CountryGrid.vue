@@ -1,7 +1,8 @@
 <template>
-  <div class="h-[600px] w-full bg-white rounded-lg shadow-md">
+  <div style="height: 600px; width: 100%;" class="bg-white rounded-lg shadow-md">
     <ag-grid-vue
-      class="ag-theme-quartz h-full w-full"
+         class="ag-theme-quartz w-full h-full"
+      style="width: 100%; height: 100%;"
       :columnDefs="columnDefs"
       :rowData="rowData"
       :defaultColDef="defaultColDef"
@@ -17,38 +18,45 @@
 import { ref, onMounted } from 'vue'
 import { AgGridVue } from 'ag-grid-vue3'
 
+import 'ag-grid-community/styles/ag-theme-quartz.min.css';
+defineOptions({
+  components: {
+    'ag-grid-vue': AgGridVue
+  }
+})
 const gridApi = ref(null)
 const rowData = ref([])
+
 
 // Definición de columnas
 const columnDefs = [
   {
-    field: 'flags',
     headerName: 'Bandera',
     width: 100,
-    cellRenderer: params => `<img src="${params.value.svg}" alt="bandera" style="width: 30px; height: 20px;">`
+    cellRenderer: params => `<img src="${params.data.flags.svg}" alt="bandera" style="width: 30px; height: 20px;">`
   },
+  {
+  field: 'nameCommon',
+  headerName: 'País',
+  filter: true,
+  sortable: true,
+  valueGetter: params => params.data.name?.common || 'N/A'
+},
   { 
-    field: 'name.common',
-    headerName: 'País',
-    filter: true,
-    sortable: true
-  },
-  { 
-    field: 'capital',
     headerName: 'Capital',
     valueGetter: params => params.data.capital?.[0] || 'N/A'
   },
+  {
+  field: 'region',
+  headerName: 'Región',
+  filter: true,
+  valueGetter: params => params.data.region
+},
   { 
-    field: 'region',
-    headerName: 'Región',
-    filter: true
-  },
-  { 
-    field: 'population',
     headerName: 'Población',
     filter: 'agNumberColumnFilter',
-    valueFormatter: params => params.value.toLocaleString()
+    valueGetter: params => params.data.population,
+    valueFormatter: params => params.value?.toLocaleString()
   }
 ]
 
