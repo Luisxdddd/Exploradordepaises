@@ -15,7 +15,7 @@
       </header>
 
       <!-- Filtros -->
-    <!--  <CountryFilter @filter-change="handleFilterChange" /> -->
+     <CountryFilter @filter-change="handleFilterChange" /> 
 
       <!-- Grid y Detalles -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
